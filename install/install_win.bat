@@ -13,4 +13,4 @@ set MayaPy="%ProgramFiles%\Autodesk\Maya%MayaVersion%\bin\mayapy.exe"
 %MayaPy% -m pip install -U -r %CurrentPath%\requirements.txt -t %UserProfile%\Documents\maya\%MayaVersion%\scripts\site-packages
 
 :: install module
-robocopy %RootPath%\%ModuleName% %UserProfile%\Documents\maya\%MayaVersion%\scripts\%ModuleName% /MIR
+robocopy %RootPath%\scripts\%ModuleName% %UserProfile%\Documents\maya\%MayaVersion%\scripts\%ModuleName% /MIR

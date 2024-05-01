@@ -1,71 +1,70 @@
 # ChatMaya
-MayaからChatGPT API（[gpt-3.5-turbo / gpt-4](https://platform.openai.com/docs/guides/chat)）を呼び出し、Python/MELスクリプトを生成・実行するGUIです。  
-[VOICEVOX ENGINE](https://github.com/VOICEVOX/voicevox_engine)が起動していると、同時に読み上げが行われます。  
+A GUI that calls ChatGPT API ([gpt-3.5-turbo / gpt-4](https://platform.openai.com/docs/guides/chat)) from Maya to generate and execute Python/MEL scripts。
+If [VOICEVOX ENGINE](https://github.com/VOICEVOX/voicevox_engine) is running, the reading is done at the same time.
 
 ![example1](.images/example1.png)
 
-> テスト環境 :
+> Test Environment :
 > * Windows 10/11
 > * Maya 2023 (Python3.9.7)
 > * Maya 2024 (Python3.10.8)
 
-## インストール
-1. [Account API Keys - OpenAI API](https://platform.openai.com/account/api-keys)よりAPI Keyを取得し、環境変数`OPENAI_API_KEY`に設定する  
+## Install
+1. Obtain an API Key from [Account API Keys - OpenAI API](https://platform.openai.com/account/api-keys) and set it to the environment variable `OPENAI_API_KEY`.
 
-2. Codeをzipダウンロードし、任意の場所に解凍する。
+2. Zip download the Code and unzip it to any location.
 
-3. Mayaを起動していない状態で、`install/install_maya20XX_win.bat`を実行する。
+3. Run `install/install_maya20XX_win.bat` without Maya running.
 
-## マニュアルインストール
-1. [Account API Keys - OpenAI API](https://platform.openai.com/account/api-keys)よりAPI Keyを取得し、環境変数`OPENAI_API_KEY`に設定する  
+## Manual Installation
+1. Obtain an API Key from [Account API Keys - OpenAI API](https://platform.openai.com/account/api-keys) and set it to the environment variable `OPENAI_API_KEY`.
 
-2. Codeをzipダウンロードし、任意の場所に解凍する。
+2. Zip download the Code and unzip it to any location.
 
-3. 必要なパッケージをインストールする
-    * Maya本体に入れる場合 :  
+3. Install the necessary packages
+    * For inclusion in the main body of Maya :
     `mayapy.exe -m pip install -U -r requirements.txt`
-    * Users以下、Mayaバージョン固有のフォルダにインストールする場合 :  
-    `mayapy.exe -m pip install -U -r requirements.txt --target C:/Users/<ユーザー名>/Documents/maya/<バージョン>/scripts/site-packages`
+    * To install in a Maya version-specific folder under Users :
+    `mayapy.exe -m pip install -U -r requirements.txt --target C:/Users/<username>/Documents/maya/<Maya version>/scripts/site-packages`
 
-> 必要なパッケージは[install/requirements.txt](install/requirements.txt)に書いてありますか、大幅に仕様が違くなければバージョンは厳密に合わせる必要は無いと思います。  
-> 参考 : [mayapy と pip を使用して Python パッケージを管理する](https://help.autodesk.com/view/MAYAUL/2023/JPN/?guid=GUID-72A245EC-CDB4-46AB-BEE0-4BBBF9791627)
+> The required packages are listed in [install/requirements.txt](install/requirements.txt), and unless the specifications are significantly different, there is no need to strictly match the versions.。
+> Consultation : [Using mayapy and pip to manage Python packages](https://help.autodesk.com/view/MAYAUL/2023/JPN/?guid=GUID-72A245EC-CDB4-46AB-BEE0-4BBBF9791627)
 
-4. `chatmaya`をインストールする  
-    次のいずれかを実施:
-    * `C:/Users/<ユーザー名>/Documents/maya/<バージョン>/scripts`に`chatmaya`フォルダをコピーする
-    * 環境変数`PYTHONPATH`に`chatmaya`の親フォルダを追加する
-    * `C:/Users/<ユーザー名>/Documents/maya/<バージョン>/Maya.env`に`PYTHONPATH=<chatmayaの親フォルダ>`を追記する
+4. `chatmaya`Install one of the following:
+    * Copy the `chatmaya` folder to `C:/Users/<username>/Documents/maya/<version>/scripts`.
+    * Add the parent folder of `chatmaya` to the environment variable `PYTHONPATH`.
+    * Append `PYTHONPATH=<chatmaya parent folder>` to `C:/Users/<username>/Documents/maya/<Maya version>/Maya.env`
 
-## 実行
+## Execution
 ```python
 import chatmaya
 chatmaya.run()
 ```
 
-## 使用方法
-* 左側下部のテキストフィールドにプロンプトを打ち込み送信ボタンを押すとAPIにリクエストが送信され返答が表示されます。
-* 返答はPython/MELコードとその他の部分に分解されそれぞれのフィールドに表示されます。
-* 返答に複数のコードブロックが書いてあった場合は、右側下部のプルダウンから選択出来るようになります。
-* New Chatを押すかウィンドウを閉じるまでは、会話履歴が残ります。（※概算トークン数が一定数を超えると古い履歴から削られていきます。）
-* ログ、設定ファイル、書いてもらったスクリプトファイルは随時、`C:\Users\<ユーザー名>\Documents\maya\ChatMaya`に出力されています。
-* 別途[VOICEVOX ENGINE](https://github.com/VOICEVOX/voicevox_engine)が起動していると、自動的にコードブロック以外の部分の読み上げが行われます。使用する場合はGPUモード推奨です。
-* Settings > Open Settings Dialog より各種設定値を変更できます。  
+## Usage
+* Type the prompt in the text field at the bottom left and press the Send button to send the request to the API and receive a response.
+* The response is broken down into Python/MEL code and other parts and displayed in the respective fields.
+* If more than one block of code is written in the reply, you will be able to select from the pull-down menu at the bottom of the right side.
+* The conversation history will remain until you press New Chat or close the window.（※When the approximate number of tokens exceeds a certain number, the oldest history is removed.）
+* Logs, configuration files, and script files you have written are output to `C:\Users\<username>\Documents\maya\ ChatMaya` as needed.
+* If [VOICEVOX ENGINE](https://github.com/VOICEVOX/voicevox_engine) is running separately, it will automatically read out the non code block.GPU mode is recommended for use.
+* Various settings can be changed from Settings > Open Settings Dialog.
     ![settings](.images/settings.png)
 
-## アンインストール
-batでインストールしている場合、以下のフォルダを削除すればアンインストールされます。  
-* ツール本体：`C:\Users\<ユーザー名>\Documents\maya\<Mayaバージョン>\scripts\chatmaya`
-* 設定/ログ：`C:\Users\<ユーザー名>\Documents\maya\ChatMaya`
+## Uninstall
+If installed by bat, it will be uninstalled by deleting the following folder.
+* Tool itself: `C:\Users\<username>\Documents\maya\<Maya version>\scripts\chatmaya`
+* Configuration/Log: `C:\Users\<username>\Documents\maya\ChatMaya`
 
-追加パッケージは`pip uninstall`で個別に行うか以下のフォルダを丸ごと削除してください。
-* `C:\Users\<ユーザー名>\Documents\maya\<Mayaバージョン>\site-packages`
+Additional packages can be done individually with `pip uninstall` or by removing the entire folder below.
+* `C:\Users\<username>\Documents\maya\<Maya version>\site-packages`.
 
-## リンク
-### 解説, サンプル
-※[beta](https://github.com/akasaki1211/ChatGPT_Maya/tree/beta)時点での解説です
-* [ChatGPT API を使用してMayaを（Pythonスクリプトで）操作してもらう - Qiita](https://qiita.com/akasaki1211/items/34d0f89e0ae2c6efaf48)
-* [サンプル(Twitter)](https://twitter.com/akasaki1211/status/1632704327340150787)
+## Link
+### Explanation, Sample
+※ Description as of [beta](https://github.com/akasaki1211/ChatGPT_Maya/tree/beta)
+* [Get Maya to work (with Python scripts) using ChatGPT API - Qiita](https://qiita.com/akasaki1211/items/34d0f89e0ae2c6efaf48)
+* [Sample (Twitter)](https://twitter.com/akasaki1211/status/1632704327340150787)
 
-### コード参考
-* [ChatGPT APIを使ってAIキャラクターを作ってみる！ - Qiita](https://qiita.com/sakasegawa/items/db2cff79bd14faf2c8e0)
-* [【Python】ChatGPT APIでウェブサイト版のように返答を逐次受け取る方法 - Qiita](https://qiita.com/Cartelet/items/cfc07fc499b6ebbc7dde)
+### Code Reference
+* [Try to create an AI character using ChatGPT API! - Qiita](https://qiita.com/sakasegawa/items/db2cff79bd14faf2c8e0)
+* [[Python] How to receive sequential replies with ChatGPT API like the website version - Qiita](https://qiita.com/Cartelet/items/cfc07fc499b6ebbc7dde)
