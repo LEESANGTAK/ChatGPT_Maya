@@ -14,26 +14,7 @@ If [VOICEVOX ENGINE](https://github.com/VOICEVOX/voicevox_engine) is running, th
 
 2. Zip download the Code and unzip it to any location.
 
-3. Run `install/install_maya20XX_win.bat` without Maya running.
-
-## Manual Installation
-1. Obtain an API Key from [Account API Keys - OpenAI API](https://platform.openai.com/account/api-keys) and set it to the environment variable `OPENAI_API_KEY`.
-
-2. Zip download the Code and unzip it to any location.
-
-3. Install the necessary packages
-    * For inclusion in the main body of Maya :
-    `mayapy.exe -m pip install -U -r requirements.txt`
-    * To install in a Maya version-specific folder under Users :
-    `mayapy.exe -m pip install -U -r requirements.txt --target C:/Users/<username>/Documents/maya/<Maya version>/scripts/site-packages`
-
-> The required packages are listed in [install/requirements.txt](install/requirements.txt), and unless the specifications are significantly different, there is no need to strictly match the versions.。
-> Consultation : [Using mayapy and pip to manage Python packages](https://help.autodesk.com/view/MAYAUL/2023/JPN/?guid=GUID-72A245EC-CDB4-46AB-BEE0-4BBBF9791627)
-
-4. `chatmaya`Install one of the following:
-    * Copy the `chatmaya` folder to `C:/Users/<username>/Documents/maya/<version>/scripts`.
-    * Add the parent folder of `chatmaya` to the environment variable `PYTHONPATH`.
-    * Append `PYTHONPATH=<chatmaya parent folder>` to `C:/Users/<username>/Documents/maya/<Maya version>/Maya.env`
+3. Drag and drap `install.py` file to the Maya viewport.
 
 ## Execution
 ```python
@@ -52,12 +33,7 @@ chatmaya.run()
     ![settings](.images/settings.png)
 
 ## Uninstall
-If installed by bat, it will be uninstalled by deleting the following folder.
-* Tool itself: `C:\Users\<username>\Documents\maya\<Maya version>\scripts\chatmaya`
-* Configuration/Log: `C:\Users\<username>\Documents\maya\ChatMaya`
-
-Additional packages can be done individually with `pip uninstall` or by removing the entire folder below.
-* `C:\Users\<username>\Documents\maya\<Maya version>\site-packages`.
+Remove the `ChatGPT_Maya.mod` file in the `C:\Users\<User Name>\Documents\maya\modules` directory.
 
 ## Link
 ### Explanation, Sample
@@ -68,3 +44,14 @@ Additional packages can be done individually with `pip uninstall` or by removing
 ### Code Reference
 * [Try to create an AI character using ChatGPT API! - Qiita](https://qiita.com/sakasegawa/items/db2cff79bd14faf2c8e0)
 * [[Python] How to receive sequential replies with ChatGPT API like the website version - Qiita](https://qiita.com/Cartelet/items/cfc07fc499b6ebbc7dde)
+
+
+## SSL Connection Error
+If you try to use this script in a PC at your company, it can cause connection error. Because the Security policies of your company.
+1. Go to the [Account API Keys - OpenAI API](https://platform.openai.com/account/api-keys) page in the Chrome browser.
+2. ![downloading_certificate_file](.images/downloading_certificate_file.png)
+Download certificate file
+3. ![contents_of_crt_file](.images/contents_of_crt_file.png)
+Copy text in the certificate file you downloaded in setp 2.
+4. Paste the text to end of the `ChatGPT_Maya\extern\<Python Version>\site-packages\certifi\cacert.pem` file.
+5. Restart Maya and run the script.

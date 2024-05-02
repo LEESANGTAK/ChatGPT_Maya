@@ -30,38 +30,21 @@ PYTHON_VERSION_TABLE = {
 
 
 def onMayaDroppedPythonFile(*args, **kwargs):
-    createModuleFile()
+    removeOldInstallModule()
     addEnvPaths()
     addShelfButtons()
-    # run()
+    createModuleFile()
     cmds.confirmDialog(title='Info', message='"{}" module installed successfully.'.format(MODULE_NAME))
 
 
-# Folders in the module directory that named as "icons, plug-ins, scripts" are automatically added to the maya environment variables.
-def createModuleFile():
-    moduleFileName = '{}.mod'.format(MODULE_NAME)
-
-    contents = '''+ MAYAVERSION:2023 {0} {1} {2}
-PYTHONPATH +:= extern/Python{3}/site-packages
-
-+ MAYAVERSION:2024 {0} {1} {2}
-PYTHONPATH +:= extern/Python{3}/site-packages
-'''.format(MODULE_NAME, MODULE_VERSION, MODULE_PATH, PYTHON_VERSION_TABLE[MAYA_VERSION])
-
-    with open(os.path.join(getModulesDirectory(), moduleFileName), 'w') as f:
-        f.write(contents)
-
-
-def getModulesDirectory():
-    modulesDir = None
-
-    mayaAppDir = cmds.internalVar(uad=True)
-    modulesDir = os.path.join(mayaAppDir, 'modules')
-
-    if not os.path.exists(modulesDir):
-        os.mkdir(modulesDir)
-
-    return modulesDir
+def removeOldInstallModule():
+    foundOldInstall = False
+    for modName in sys.modules:
+        if modName == 'install':
+            foundOldInstall = True
+            break
+    if foundOldInstall:
+        del(sys.modules[modName])
 
 
 def addEnvPaths():
@@ -101,5 +84,28 @@ def getCurrentShelf():
     return curShelf
 
 
-# def run():
-#     imp.load_source('', '{}/scripts/userSetup.py'.format(MODULE_PATH))
+# Folders in the module directory that named as "icons, plug-ins, scripts" are automatically added to the maya environment variables.
+def createModuleFile():
+    moduleFileName = '{}.mod'.format(MODULE_NAME)
+
+    contents = '''+ MAYAVERSION:2023 {0} {1} {2}
+PYTHONPATH +:= extern/Python39/site-packages
+
++ MAYAVERSION:2024 {0} {1} {2}
+PYTHONPATH +:= extern/Python310/site-packages
+'''.format(MODULE_NAME, MODULE_VERSION, MODULE_PATH)
+
+    with open(os.path.join(getModulesDirectory(), moduleFileName), 'w') as f:
+        f.write(contents)
+
+
+def getModulesDirectory():
+    modulesDir = None
+
+    mayaAppDir = cmds.internalVar(uad=True)
+    modulesDir = os.path.join(mayaAppDir, 'modules')
+
+    if not os.path.exists(modulesDir):
+        os.mkdir(modulesDir)
+
+    return modulesDir
